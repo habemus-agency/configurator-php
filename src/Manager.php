@@ -1,12 +1,13 @@
 <?php
 namespace Configurator;
 
-use Components\Step;
+use Configurator\Components\Step;
 
 class Manager {
 	protected $steps;
 	protected $current = 0;
 	protected $completed = 0;
+	protected $base_url = '/';
 
 	public function __construct(array $init,array $input = [],array $filled = []) {
 		$is_consequent = true;
@@ -36,6 +37,10 @@ class Manager {
 			$this->current = $this->completed;
 		}
 
+	}
+
+	public function setBaseUrl(string $url){
+		$this->base_url = $url;
 	}
 
 
@@ -77,12 +82,16 @@ class Manager {
 		return $k_v;
 	}
 
-	public function getPrevLink(string $base_url = '') {
-		return $base_url . "?" . http_build_query([ 'step' => ($this->current - 1) ]);
+	public function getPrevLink() {
+		return $this->base_url . "?" . http_build_query([ 'step' => ($this->current - 1) ]);
 	}
 
-	public function getResetLink(string $base_url = '') {
-		return $base_url . "?" . http_build_query([ 'reset' => true ]);
+	public function getResetLink() {
+		return $this->base_url . "?" . http_build_query([ 'reset' => true ]);
+	}
+
+	public function getFormAction() {
+		return $this->base_url;
 	}
 
 

@@ -61,6 +61,9 @@ if($configurator->isCompleted()){
   // do stuff with filled data
 }
 
+//base url should be always set to current url (without params)
+$configurator->setBaseUrl("https://base.url/configurator-page");
+
 
 $step = $configurator->current(); //get current step
 
@@ -69,8 +72,9 @@ $configurator->getStepsNumber(); //gets total steps
 $configurator->getCurrentStepNumber();
 $configurator->isFirstStep();
 $configurator->isLastStep();
-$configurator->getPrevLink("http://base/url/");
-$configurator->getResetLink("http://base/url/");
+$configurator->getPrevLink();
+$configurator->getResetLink();
+$configurator->getFormAction();
 
 ```
 
@@ -80,7 +84,7 @@ $configurator->getResetLink("http://base/url/");
 
 	...
 
-	<form method="POST" action="{{ base_url }}">
+	<form method="POST" action="{{ configurator.getFormAction() }}">
 
 		<input type="hidden" name="step" value="{{ configurator.getCurrentStepNumber() + 1 }}">
 
@@ -97,7 +101,7 @@ $configurator->getResetLink("http://base/url/");
 		{% endfor %}
 
 		{% if not configurator.isFirstStep() %}
-			<a href="{{ configurator.getPrevLink(base_url) }}">Back</a>
+			<a href="{{ configurator.getPrevLink() }}">Back</a>
 		{% endif %}
 
 		<input type="submit" value="Next">
