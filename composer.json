@@ -1,0 +1,19 @@
+{
+    "name": "apdev/configurator-php",
+    "description": "Generic configurator object for fast configurators develop in PHP",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Apdev\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "apdev",
+            "email": "apdev@apdev.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
