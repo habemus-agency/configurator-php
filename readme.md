@@ -27,32 +27,50 @@ $config = [
 	//step 1
 	[
 		'fields' => [
-				//field 1
-				[
-					'name' => 'field_1_name',
-					'type' => 'radio',
-					'choices' => [
-						//choice 1
-						[
-								'label' => 'Choice 1 Label',
-								'value' => 'A',
-						],
-						//choice 2
-						[
-								'label' => 'Choice 2 Label',
-								'value' => 'B',
-						],
-						...
-					],
+			//field 1
+			[
+				'name' => 'field_1_name',
+				'type' => 'radio',
+				//optional condition
+				'hide_if' => [
+					[ 'other_field_name' => 'valueX' ]
 				],
-				...
+				'choices' => [
+					//choice 1
+					[
+						'label' => 'Choice 1 Label',
+						'value' => 'A',
+						//optional conditions
+						'hide_if' => [
+							[ 'field_name' => 'valueX' ],//OR
+							[ 'field_name' => 'valueY' ],
+							...
+						],
+					],
+					//choice 2
+					[
+						'label' => 'Choice 2 Label',
+						'value' => 'B',
+					],
+
+					//additional choices
+					...
+				],
+			],
+
+			//additional fields
+			...
 		],
 	],
+
+	//additional steps
 	...
 ];
 
 //create instance
 $configurator = new Manager($config,$input,$filled);
+//base url should be always set to current url (without params)
+$configurator->setBaseUrl("https://base.url/configurator-page");
 
 //update filled data
 $_SESSION['filled_data'] = $configurator->filled();
@@ -60,9 +78,6 @@ $_SESSION['filled_data'] = $configurator->filled();
 if($configurator->isCompleted()){
   // do stuff with filled data
 }
-
-//base url should be always set to current url (without params)
-$configurator->setBaseUrl("https://base.url/configurator-page");
 
 
 $step = $configurator->current(); //get current step
