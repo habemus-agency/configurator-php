@@ -1,23 +1,23 @@
 <?php
 namespace Configurator\Components;
 
+use Configurator\Traits\HasConditions;
+
 class Field {
+	use HasConditions;
+
 	public $title;
 	public $content;
 	public $name;
-	public $type; //radio
+	public $type = self::TYPE_RADIO;
 	protected $choices = [];
 	protected $value = null; //set with choice selection
 
 	const TYPE_RADIO = 'radio';
-	//const TYPE_CHECKBOX = 'checkbox';
 
 	public function __construct(array $init){
 
-		foreach ($init['choices'] as $choice) {
-			$this->choices [] = new Choice($choice);
-		}
-
+		$choices = $init['choices'];
 		unset($init['choices']);
 
 		foreach ($init as $key => $value) {
@@ -25,31 +25,64 @@ class Field {
 					$this->{$key} = $value;
 			}
 		}
+
+		foreach($choices as $choice) {
+			$this->choices [] = new Choice($choice);
+		}
 	}
 
-    public function setValue($value){
-			$is_valid = false;
 
-			foreach ($this->choices as $choice) {
+	public function fill(array $input = []){
+		//fill choices
+		foreach ($this->choices as $choice) {
+			$choice->setConditionsData($input);
+		}
+
+		//fill this
+		$this->setConditionsData($input);
+
+		foreach ($input as $key => $value) {
+			if($this->name == $key){
+				$this->setValue($value);
+			}
+		}
+	}
+
+
+	private function setValue($value){
+		$is_valid = false;
+
+		foreach ($this->choices as $choice) {
+			if(!$choice->isHidden()){
 				if($choice->value == $value){
 					$is_valid = true;
 				}
 			}
+		}
 
-			if($is_valid == true){
-				$this->value = $value;
+		if($is_valid == true and !$this->isHidden()){
+			$this->value = $value;
+		}
+	}
+
+	public function isFilled(){
+		return !empty($this->value) or $this->isHidden();
+	}
+
+	public function choices(){
+		$choices = [];
+
+		foreach ($this->choices as $choice) {
+			if(!$choice->isHidden()){
+				$choices [] = $choice;
 			}
-    }
+		}
 
-    public function isFilled(){
-      return !empty($this->value);
-    }
+		return $choices;
+	}
 
-    public function choices(){
-      return $this->choices;
-    }
+	public function value(){
+		return $this->value;
+	}
 
-    public function value(){
-      return $this->value;
-    }
 }

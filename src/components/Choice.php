@@ -1,7 +1,11 @@
 <?php
 namespace Configurator\Components;
 
+use Configurator\Traits\HasConditions;
+
 class Choice {
+	use HasConditions;
+
 	public $label;
 	public $value;
 	public $image;
