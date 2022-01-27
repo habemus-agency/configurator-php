@@ -1,7 +1,7 @@
 <?php
 namespace Configurator;
 
-use Configurator\Components\Step;
+use Configurator\Elements\Step;
 
 class Manager {
 	protected $steps;

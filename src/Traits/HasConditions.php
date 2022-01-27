@@ -1,7 +1,7 @@
 <?php
 namespace Configurator\Traits;
 
-trait hasConditions {
+trait HasConditions {
 
 	protected $hide_if = [];
 	private $conditions_data = [];

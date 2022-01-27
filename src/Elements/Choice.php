@@ -1,5 +1,5 @@
 <?php
-namespace Configurator\Components;
+namespace Configurator\Elements;
 
 use Configurator\Traits\HasConditions;
 

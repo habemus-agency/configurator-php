@@ -1,5 +1,5 @@
 <?php
-namespace Configurator\Components;
+namespace Configurator\Elements;
 
 class Step {
 	public $title;
